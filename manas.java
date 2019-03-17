@@ -56,24 +56,20 @@ class manas {
         return t;
     }
 
-public static void main(String args[])
+public static void main(String args[])throws IOException
 {
     char st, an, ip[];
     String r;
-    int ir,ic,j=0,k;
-    String t[5][6] = {{"$","$","TH","$","TH","$"},
-                    {"+TH","$","e","e","$","e"},
-                    {"$","$","FU","$","FU","$"},
-                    {"e","*FU","e","e","$","e"},
-                    {"$","$","(E)","$","i","$"}};
+    int ir,ic=0,j=0,k;
+    String t[][] = {{"$","$","TH","$","TH","$"},{"+TH","$","e","e","$","e"},{"$","$","FU","$","FU","$"},{"e","*FU","e","e","$","e"},{"$","$","(E)","$","i","$"}};
     System.out.println("\nEnter any String(Append with $)");
-    ip  = new BufferedReader(new InputStreamReader(System.in)).readLine().toCharArray();   
+    ip  = new BufferedReader(new InputStreamReader(System.in)).readLine().toCharArray();  
     System.out.println("Stack\tInput\tOutput\n\n");
     push("$E");
     display();
     // String rip = ip.toString();
     System.out.println("\t"+ip.toString()+"\n");
-    for(j=0;ip[j]!='\0';)
+    for(j=0;j<ip.length;)
     {
     if(TOS()==an)
         {
@@ -100,8 +96,8 @@ public static void main(String args[])
         else if(an==')')ic=3;
         else if((an>='a'&&an<='z')||(an>='A'&&an<='Z')){ic=4;an='i';}
         else if(an=='$')ic=5;
-        strcpy(r,strrev(t[ir][ic]));
-        t[ir][rc] = strrev(t[ir][ic]);
+        r = strrev(t[ir][ic]);
+        t[ir][ic] = strrev(t[ir][ic]);
         pop();
         push(r);
         if(TOS()=='e')
