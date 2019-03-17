@@ -40,7 +40,7 @@ class manas {
     {
         int l;
         System.out.println("\t");
-        for (l = m; p[l] != '\0'; l++)
+        for (l = m; l<p.length; l++)
             System.out.print( p[l]);
     }
 
@@ -58,7 +58,7 @@ class manas {
 
 public static void main(String args[])throws IOException
 {
-    char st, an, ip[];
+    char st, an = 1, ip[];
     String r;
     int ir,ic=0,j=0,k;
     String t[][] = {{"$","$","TH","$","TH","$"},{"+TH","$","e","e","$","e"},{"$","$","FU","$","FU","$"},{"e","*FU","e","e","$","e"},{"$","$","(E)","$","i","$"}};
