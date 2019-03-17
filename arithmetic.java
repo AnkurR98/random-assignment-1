@@ -54,7 +54,8 @@ class arithmetic    {
         return productions_mod;
     }
 
-    protected static static String[] 
+    protected static String[] getVariables(String productions_raw[])    {
+    }
 
 
 }
