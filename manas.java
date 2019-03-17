@@ -48,23 +48,31 @@ class manas {
         return a;
     }
 
+    protected static String strrev(String t) {
+        StringBuilder t1 = new StringBuilder();
+        t1.append(t);
+        t1.reverse();
+        t = t1.toString();
+        return t;
+    }
+
 public static void main(String args[])
 {
-    char st,an, ip[];
+    char st, an, ip[];
     String r;
     int ir,ic,j=0,k;
-    char t[5][6][10]={"$","$","TH","$","TH","$",
-            "+TH","$","e","e","$","e",
-            "$","$","FU","$","FU","$",
-            "e","*FU","e","e","$","e",
-            "$","$","(E)","$","i","$"};
+    String t[5][6] = {{"$","$","TH","$","TH","$"},
+                    {"+TH","$","e","e","$","e"},
+                    {"$","$","FU","$","FU","$"},
+                    {"e","*FU","e","e","$","e"},
+                    {"$","$","(E)","$","i","$"}};
     System.out.println("\nEnter any String(Append with $)");
     ip  = new BufferedReader(new InputStreamReader(System.in)).readLine().toCharArray();   
     System.out.println("Stack\tInput\tOutput\n\n");
     push("$E");
     display();
-    String rip = ip.toString();
-    System.out.println("\t"+rip+"\n");
+    // String rip = ip.toString();
+    System.out.println("\t"+ip.toString()+"\n");
     for(j=0;ip[j]!='\0';)
     {
     if(TOS()==an)
@@ -93,7 +101,7 @@ public static void main(String args[])
         else if((an>='a'&&an<='z')||(an>='A'&&an<='Z')){ic=4;an='i';}
         else if(an=='$')ic=5;
         strcpy(r,strrev(t[ir][ic]));
-        strrev(t[ir][ic]);
+        t[ir][rc] = strrev(t[ir][ic]);
         pop();
         push(r);
         if(TOS()=='e')
@@ -101,12 +109,12 @@ public static void main(String args[])
         pop();
         display();
         display1(ip,j);
-        System.out.println("\t%c->%c\n",st,238);
+        System.out.println("\t"+st+"->"+(char)(238));
         }
         else{
         display();
         display1(ip,j);
-        System.out.println("\t%c->%s\n",st,t[ir][ic]);
+        System.out.println("\t"+st+"->"+t[ir][ic]);
         }
         if(TOS()=='$'&&an=='$')
         break;
@@ -115,11 +123,11 @@ public static void main(String args[])
         break;
         }
         }
-        k=strcmp(stack(),"$");
+        k=stack().toString().compareTo("$");
         if(k==0)
         System.out.println("\n Given String is accepted");
         else
         System.out.println("\n Given String is not accepted");
-    return 0;
+    
     }
 }
