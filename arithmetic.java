@@ -54,7 +54,10 @@ class arithmetic    {
         return productions_mod;
     }
 
-    protected static static String[] 
+    protected static String[] segregate(String production)    {
+        
+        return null; 
+    }
 
 
 }
