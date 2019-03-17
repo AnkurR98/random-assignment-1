@@ -4,18 +4,18 @@ import java.io.*;
 import java.util.*;
 
 class manas {
-    public static char a[];
-    int top = -1, i;
+    protected static char a[];
+    protected static int top = -1, i;
 
     protected static void error() {
         System.out.println("Syntax Error");
     }
 
-    protected static void push(char k[]) // Pushes The Set Of Characters on to the Stack
+    protected static void push(String k) // Pushes The Set Of Characters on to the Stack
     {
-        for (i = 0; k[i] != '\0'; i++) {
+        for (i = 0; i < k.length(); i++) {
             if (top < 9)
-                a[++top] = k[i];
+                a[++top] = k.charAt(i);
         }
     }
 
@@ -33,7 +33,7 @@ class manas {
     protected static void display() // Displays Elements Of Stack
     {
         for (i = 0; i <= top; i++)
-            System.out.println("%c", a[i]);
+            System.out.print(a[i]);
     }
 
     protected static void display1(char p[], int m) // Displays The Present Input String
@@ -41,7 +41,7 @@ class manas {
         int l;
         System.out.println("\t");
         for (l = m; p[l] != '\0'; l++)
-            System.out.println("%c", p[l]);
+            System.out.print( p[l]);
     }
 
     protected static char[] stack(){
@@ -50,8 +50,8 @@ class manas {
 
 public static void main(String args[])
 {
-    char st,an;
-    String ip, r;
+    char st,an, ip[];
+    String r;
     int ir,ic,j=0,k;
     char t[5][6][10]={"$","$","TH","$","TH","$",
             "+TH","$","e","e","$","e",
@@ -59,11 +59,12 @@ public static void main(String args[])
             "e","*FU","e","e","$","e",
             "$","$","(E)","$","i","$"};
     System.out.println("\nEnter any String(Append with $)");
-    ip  = BufferedReader(new InputStreamReader(System.in)).readLine();
+    ip  = new BufferedReader(new InputStreamReader(System.in)).readLine().toCharArray();   
     System.out.println("Stack\tInput\tOutput\n\n");
     push("$E");
     display();
-    System.out.println("\t%s\n",ip);
+    String rip = ip.toString();
+    System.out.println("\t"+rip+"\n");
     for(j=0;ip[j]!='\0';)
     {
     if(TOS()==an)
