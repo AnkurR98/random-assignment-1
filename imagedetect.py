@@ -1,3 +1,5 @@
+# Execute using :- python imagedetect.py --image sampleimage.jpg
+
 # import the necessary packages
 import numpy as np
 import argparse
