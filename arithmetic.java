@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 
 class arithmetic    {
+
+    static String variables[], terminals[];
     public static void main(String args[])throws IOException    {
         String productions_raw[] = new String[3];
         productions_raw[0] = "E -> T + E | T";
@@ -14,15 +16,19 @@ class arithmetic    {
             System.out.println(debugs);
         }
         System.out.print("Variables : ");
-        String variables[] = getVariables(productions_lfrr);
+        variables = getVariables(productions_lfrr);
         for(String debugs : variables)   {
             System.out.print(debugs+"\t");
         }
-        String terminals[] = getTerminals(productions_lfrr);
+        System.out.println();
+        terminals = getTerminals(productions_lfrr);
         System.out.print("Terminals : ");
         for(String debugs : terminals)   {
             System.out.print(debugs+"\t");
         }
+
+
+        System.out.println();
     }
 
     protected static boolean contains(String a, String b[]) {
@@ -49,8 +55,8 @@ class arithmetic    {
             while(production.charAt(c)!='|')
                 c++;
             if(a == production.charAt(b+2)) {
-                productions_mod[k] = a + " -> ";
-                productions_mod[k+1] = a + "\' -> ";
+                productions_mod[k] = a + " ->";
+                productions_mod[k+1] = a + "\' ->";
                 // Following code is for general grammars, I guess. Not required for current grammar
                 // String inpString[][] = segregate(production, a);
                 // for(int i = 0; i<inpstring[0].length; i++)
@@ -72,7 +78,7 @@ class arithmetic    {
     }
 
     protected static String[] getVariables(String productions_lfrr[])    {
-        String s1 = "", variables[] = new String[4];
+        String s1 = "", variable[] = new String[4];
         int k = 0, i = 0;
         for(String production : productions_lfrr)   {
             while(production.charAt(k) != 32)  {
@@ -80,29 +86,41 @@ class arithmetic    {
                 // System.out.println(s1);
                 k++;
             }
-            variables[i++] = s1;
+            variable[i++] = s1;
             k = 0;
             s1 = "";
         }
-        return variables;
+        return variable;
     }
 
     protected static String[] getTerminals(String productions_lfrr[])   {
-        String s1 = "", variables[] = new String[4];
-        int k = 0, i = 0;
+        String s1 = "", terminal[] = new String[6];
+        int i = 0;
         for(String production : productions_lfrr)   {
-            for(char term : production.toCharArray())  {
-                while(term!=32 || term!='|' || term!='-' || term!='>')    {
+            // System.out.println(production);
+            production+=" | ";
+            // System.out.println(production);
+            for(int j = 0; j<production.length(); j++)  {
+                char term = production.charAt(j);
+                // System.out.print(term+"\t");
+                if(term!=32 && term!='|' && term!='-' && term!='>')    {
                     s1 = s1 + term;
+                    // System.out.println(s1);
+                    continue;
                 }
                 // System.out.println(s1);
-                
-            }
-            variables[i++] = s1;
-            k = 0;
-            s1 = "";
+                if(contains(s1,variables))  {
+                    s1 = "";
+                    continue;
+                }
+                else if(s1!="") {
+                    terminal[i++] = s1;
+                    s1 = "";
+                }
+            }     
+            s1 = "";      
         }
-        return variables;
+        return terminal;
     }
 
 }
