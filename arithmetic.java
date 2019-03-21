@@ -3,7 +3,8 @@ import java.util.*;
 
 class arithmetic    {
 
-    static String variables[], terminals[], first[], follow[];
+    static String variables[], terminals[];
+    static HashMap<String,List<String>> first = new HashMap<String,List<String>>(), follow = new HashMap<String,List<String>>();
     public static void main(String args[])throws IOException    {
         String productions_raw[] = new String[3];
         productions_raw[0] = "E -> T + E | T";
@@ -37,7 +38,7 @@ class arithmetic    {
                 k++;
             if(j!=productions_lfrr[i].length()) {       //2 productions present
                 prodList = new ArrayList<String>();
-                prodList.add(productions_lfrr[i].substring(k+2,j-2));
+                prodList.add(productions_lfrr[i].substring(k+2,j-1));
                 prodList.add(productions_lfrr[i].substring(j+2));
                 productions_lrr3.put(productions_lfrr[i].substring(0,k-2),prodList);
             }
@@ -47,7 +48,8 @@ class arithmetic    {
                 productions_lrr3.put(productions_lfrr[i].substring(0,k-2),prodList);
             }
         }
-        System.out.println(productions_lrr3);
+        // System.out.println(productions_lrr3);
+        findFirst(productions_lrr3);
 
         System.out.println();
     }
@@ -144,7 +146,53 @@ class arithmetic    {
         return terminal;
     }
 
-    protected static void findFirst(String productions_l3rr[])  {
-
+    protected static void findFirst(HashMap<String, List<String>> productions_lrr3)  {
+        System.out.println(productions_lrr3);
+        List<String> temp = new ArrayList<String>();
+        for(String var : variables) {
+            List<String> tmp = productions_lrr3.get(var);
+            for(String prod : tmp) {
+                prod+=" ";
+                // System.out.println(prod);
+                int j = 0;
+                while(prod.charAt(j)!=32)   j++;
+                if(contains(prod.substring(0,j),terminals)) 
+                    if(first.get(var) == null)  {
+                        temp = new ArrayList();
+                        temp.add(prod.substring(0,j));
+                        first.put(var, temp);
+                    }
+                    else
+                        first.get(var).add((prod.substring(0,j)));
+            }
+        }
+        // System.out.println(first);
+        for(String var : variables) {
+            List<String> tmp = productions_lrr3.get(var);
+            for(String prod : tmp) {
+                prod+=" ";
+                // System.out.println(prod);
+                int j = 0;
+                while(prod.charAt(j)!=32)   j++;
+                if(contains(prod.substring(0,j),variables)) {
+                    if(first.get(prod.substring(0,j)) != null)  {
+                        temp = first.get(prod.substring(0,j));
+                        first.put(var, temp);
+                    }
+                }
+            }
+        }
+        List<String> tmp = productions_lrr3.get(variables[0]);
+        temp = new ArrayList<String>();
+        temp = first.get(tmp.get(0).substring(0,1));
+        first.put(variables[0], temp);
+        System.out.println(first);
     }
+
+    protected static void findFollow(HashMap<String, List<String>> productions_lrr3)    {
+        List<String> init = new emptyList();
+        
+    }
+
+
 }
