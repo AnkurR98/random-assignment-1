@@ -3,7 +3,7 @@ import java.util.*;
 
 class arithmetic    {
 
-    static String variables[], terminals[];
+    static String variables[], terminals[], first[], follow[];
     public static void main(String args[])throws IOException    {
         String productions_raw[] = new String[3];
         productions_raw[0] = "E -> T + E | T";
@@ -26,7 +26,28 @@ class arithmetic    {
         for(String debugs : terminals)   {
             System.out.print(debugs+"\t");
         }
-
+        System.out.println();
+        HashMap<String, List<String>> productions_lrr3 = new HashMap<String, List<String>>();
+        List<String> prodList = new ArrayList<String>();
+        for(int i=0; i<4; i++)  {
+            int j = 0, k = 0;
+            while(j < productions_lfrr[i].length() && productions_lfrr[i].charAt(j) != '|')
+                j++;
+            while(productions_lfrr[i].charAt(k) != '>' && k < productions_lfrr[i].length())
+                k++;
+            if(j!=productions_lfrr[i].length()) {       //2 productions present
+                prodList = new ArrayList<String>();
+                prodList.add(productions_lfrr[i].substring(k+2,j-2));
+                prodList.add(productions_lfrr[i].substring(j+2));
+                productions_lrr3.put(productions_lfrr[i].substring(0,k-2),prodList);
+            }
+            else    {                                   //1 production present only
+                prodList = new ArrayList<String>();
+                prodList.add(productions_lfrr[i].substring(k+2));
+                productions_lrr3.put(productions_lfrr[i].substring(0,k-2),prodList);
+            }
+        }
+        System.out.println(productions_lrr3);
 
         System.out.println();
     }
@@ -123,4 +144,7 @@ class arithmetic    {
         return terminal;
     }
 
+    protected static void findFirst(String productions_l3rr[])  {
+
+    }
 }
