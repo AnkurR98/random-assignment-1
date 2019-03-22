@@ -50,7 +50,7 @@ class arithmetic    {
         }
         // System.out.println(productions_lrr3);
         findFirst(productions_lrr3);
-
+        findFollow(productions_lrr3);
         System.out.println();
     }
 
@@ -90,7 +90,7 @@ class arithmetic    {
                 // k+=2;
                 productions_mod[k] = productions_mod[k] + production.substring(c+1)  + " "  + a + "\'";
                 productions_mod[k+1] = productions_mod[k+1] + production.substring(b+3,c-1)  + " "  + a + "\'";
-                productions_mod[k+1] = productions_mod[k+1] + " | ε";
+                productions_mod[k+1] = productions_mod[k+1] + " | #";
                 k+=2;
             }
             else{
@@ -190,8 +190,60 @@ class arithmetic    {
     }
 
     protected static void findFollow(HashMap<String, List<String>> productions_lrr3)    {
-        List<String> init = new emptyList();
-        
+        List<String> init = new ArrayList<String>();
+        int flag = 0;
+        String ptr;
+        int j;
+        for(int i = 0; i<variables.length; i++)
+            follow.put(variables[i],init);
+        follow.get(variables[0]).add("$");
+        for(String var : variables) {
+            List<String> temp = productions_lrr3.get(var);
+            for(String production : temp)   {
+                for(int i = 0; i<production.length();i++)   {
+                    ptr = production.substring(i,i+1);
+                    try {
+                        if(production.substring(i+1,i+2).equals("\'"))
+                            ptr = ptr.concat(production.substring(i+1,i+2));
+                    }   catch(IndexOutOfBoundsException e)
+                    {}
+                    if(!contains(ptr,variables))    continue;
+                    System.out.println(ptr);
+                    try {
+                        for(j = i+2; j<=production.length(); j++)
+                            if(production.charAt(j) == 32)
+                                break;
+                        if(contains(production.substring(i+2,j),terminals)) 
+                            follow.get(ptr).add(production.substring(i+2,j));
+                        else if(contains(production.substring(i+2,j),variables))    {
+                            init = first.get(production.substring(i+2,j));
+                            for(String t : init)    {
+                                if(t.equals("#"))
+                                    flag = 1;
+                                List<String> temp1 = follow.get(ptr);
+                                if(temp1.contains(t) || t.equals("#"))
+                                    continue;
+                                else
+                                    follow.get(ptr).add(t);
+                            }
+                        }
+                        if(flag == 1)
+                            throw new IndexOutOfBoundsException("Epsilon production");
+                    }   catch(IndexOutOfBoundsException e) {
+                        init = follow.get(var);
+                        for(String t : init)    {
+                            List<String> temp1 = follow.get(ptr);
+                            if(temp1.contains(t))
+                                continue;
+                            else
+                                follow.get(ptr).add(t);
+                        }
+                        flag = 0;
+                    }
+                }
+            }
+        }
+        System.out.println(follow);
     }
 
 
