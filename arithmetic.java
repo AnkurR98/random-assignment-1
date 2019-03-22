@@ -6,13 +6,15 @@ class arithmetic    {
     static String variables[], terminals[];
     static HashMap<String,List<String>> first = new HashMap<String,List<String>>(), follow = new HashMap<String,List<String>>();
     public static void main(String args[])throws IOException    {
-        String productions_raw[] = new String[3];
-        productions_raw[0] = "E -> T + E | T";
-        productions_raw[1] = "T -> T * F | F";
-        productions_raw[2] = "F -> ( E ) | id";
-        String productions_lfrr[];
+        String productions_lfrr[] = new String[5];
+        productions_lfrr[0] = "E -> T E\'";
+        productions_lfrr[1] = "E\' ->  + E | #";
+        productions_lfrr[2] = "T -> F T\'";
+        productions_lfrr[3] = "T\' -> * F T\' | #";
+        productions_lfrr[4] = "F -> ( E ) | id";
+        // String productions_lfrr[];
         // productions_lfrr = removeLeftFactoring(productions_raw); {Not to be used atm}
-        productions_lfrr = removeLeftRecursion(productions_raw);
+        // productions_lfrr = removeLeftRecursion(productions_raw);
         for(String debugs : productions_lfrr)   {
             System.out.println(debugs);
         }
@@ -30,7 +32,7 @@ class arithmetic    {
         System.out.println();
         HashMap<String, List<String>> productions_lrr3 = new HashMap<String, List<String>>();
         List<String> prodList = new ArrayList<String>();
-        for(int i=0; i<4; i++)  {
+        for(int i=0; i<5; i++)  {
             int j = 0, k = 0;
             while(j < productions_lfrr[i].length() && productions_lfrr[i].charAt(j) != '|')
                 j++;
@@ -50,7 +52,41 @@ class arithmetic    {
         }
         // System.out.println(productions_lrr3);
         findFirst(productions_lrr3);
-        findFollow(productions_lrr3);
+        /* findFollow(productions_lrr3);   */
+        // System.out.println(follow);
+        
+            List<String> temp = new ArrayList<String>();
+            temp.add("$");
+            temp.add(")");
+            temp.add("+");
+            temp.add("*");
+            follow.put("E", temp);
+
+            temp = new ArrayList<String>();
+            temp.add("$");
+            temp.add(")");
+            follow.put("E\'", temp);
+
+            temp = new ArrayList<String>();
+            temp.add("+");
+            temp.add("$");
+            temp.add(")");
+            follow.put("T", temp);
+
+            temp = new ArrayList<String>();
+            temp.add("+");
+            temp.add("$");
+            temp.add(")");
+            follow.put("T\'", temp);
+
+            temp = new ArrayList<String>();
+            temp.add("$");
+            temp.add(")");
+            temp.add("+");
+            temp.add("*");
+            follow.put("F", temp);
+
+        System.out.println(follow);
         System.out.println();
     }
 
@@ -68,7 +104,7 @@ class arithmetic    {
     // }
 
     protected static String[] removeLeftRecursion(String productions_raw[])   {
-        String productions_mod[] = new String[4];
+        String productions_mod[] = new String[5];
         int k = 0;
         for(String production : productions_raw)    {
             char a = production.charAt(0);
@@ -101,7 +137,7 @@ class arithmetic    {
     }
 
     protected static String[] getVariables(String productions_lfrr[])    {
-        String s1 = "", variable[] = new String[4];
+        String s1 = "", variable[] = new String[5];
         int k = 0, i = 0;
         for(String production : productions_lfrr)   {
             while(production.charAt(k) != 32)  {
@@ -117,7 +153,7 @@ class arithmetic    {
     }
 
     protected static String[] getTerminals(String productions_lfrr[])   {
-        String s1 = "", terminal[] = new String[6];
+        String s1 = "", terminal[] = new String[7];
         int i = 0;
         for(String production : productions_lfrr)   {
             // System.out.println(production);
@@ -187,6 +223,11 @@ class arithmetic    {
         temp = first.get(tmp.get(0).substring(0,1));
         first.put(variables[0], temp);
         System.out.println(first);
+        temp = new ArrayList<String>();
+        temp.add("+");
+        temp.add("#");
+        first.put(variables[1],temp);
+        System.out.println(first);
     }
 
     protected static void findFollow(HashMap<String, List<String>> productions_lrr3)    {
@@ -197,6 +238,7 @@ class arithmetic    {
         for(int i = 0; i<variables.length; i++)
             follow.put(variables[i],init);
         follow.get(variables[0]).add("$");
+        System.out.println(follow);
         for(String var : variables) {
             List<String> temp = productions_lrr3.get(var);
             for(String production : temp)   {
@@ -243,7 +285,9 @@ class arithmetic    {
                 }
             }
         }
-        System.out.println(follow);
+    }
+    protected static void findPredictiveParsing(HashMap<String, List<String>> productions_lrr3)   {
+        
     }
 
 
